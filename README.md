@@ -1,6 +1,6 @@
 # README
 
-*DRAFT* Should be thoroughly audited before production use !
+Should be thoroughly audited before production use !
 
 The token contract allows anyone to mint tokens by depositing/staking base token
 (for at least a minimum amount of time).
