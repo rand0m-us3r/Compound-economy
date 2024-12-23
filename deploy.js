@@ -22,7 +22,7 @@ async function main() {
   const LifeToken = await ethers.getContractFactory("LifeToken");
   const lifeToken = await LifeToken.deploy(await life_multisig.getAddress());
 
-  await ecoToken.deployed();
+  await lifeToken.deployed();
 
   console.log("Deployed LIFE contract to ", lifeToken.address);
 
