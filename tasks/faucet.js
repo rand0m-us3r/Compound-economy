@@ -26,22 +26,22 @@ task("faucet", "Sends ETH and tokens to an address")
     const addressJson = fs.readFileSync(addressesFile);
     const address = JSON.parse(addressJson);
 
-    if ((await ethers.provider.getCode(address.EcoToken)) === "0x") {
+    if ((await ethers.provider.getCode(address.LifeToken)) === "0x") {
       console.error("You need to deploy your contract first");
       return;
     }
 
-    const token = await ethers.getContractAt("EcoFiToken", address.EcoToken);
-    const [_, eco_multisig] = await ethers.getSigners();
+    const token = await ethers.getContractAt("LifeToken", address.LifeToken);
+    const [_, life_multisig] = await ethers.getSigners();
 
-    const tx = await token.connect(eco_multisig)
+    const tx = await token.connect(life_multisig)
       .transfer(
         await receiver,
         ethers.BigNumber.from("1000000000000000000000"),
       );
     await tx.wait();
 
-    const tx2 = await eco_multisig.sendTransaction({
+    const tx2 = await life_multisig.sendTransaction({
       to: receiver,
       value: ethers.constants.WeiPerEther,
     });
