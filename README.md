@@ -12,7 +12,7 @@ The generation reward is as follows:
 - Minimum 360 day lockup
 - Note: lockup times (& bonuses) reset on any deposit (partial withdrawal is
   allowed without penalizing generation bonus of remaining amount)
-- Sprout Generation distribution: 90% user, 5% EcoFi, 5% user reserve balance
+- Compounding token Generation distribution: 90% user, 5% overhead/governance, 5% user reserve balance
   (user can get this once account is full withdrawn/unstaked; this is
   currently called reservePool but should probably be renamed)
 
