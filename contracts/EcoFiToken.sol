@@ -79,10 +79,10 @@ contract LifeFiToken is ERC20Burnable {
      * - Can only be called by `deployer` .
      */
     
-    function setSproutAddress(address _sproutContract) public {
-        require(sproutContract == address(0), "may only be called once");
+    function setLiveAddress(address _liveContract) public {
+        require(liveContract == address(0), "may only be called once");
         require(msg.sender == deployer, "must be called by deployer");
-        sproutContract = _sproutContract;
+        liveContract = _liveContract;
     }
 
 }
