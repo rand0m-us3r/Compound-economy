@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// EcoFi Token Contract
+// Life Token Contract
 // Copyright (C) 2021
 //
 // This program is free software: you can redistribute it and/or modify
@@ -20,19 +20,19 @@ import { ERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import { ERC20Burnable } from "@openzeppelin/contracts/token/ERC20/ERC20Burnable.sol";
 
 /**
- * @title EcoFo Token (ECO)
+ * @title Life Token (LIV)
  * @notice Implementation of OpenZepplin's ERC20Burnable Token with custom burn and staking mechanism.
  */
-contract EcoFiToken is ERC20Burnable {
+contract LifeFiToken is ERC20Burnable {
     address internal deployer;
     address internal sproutContract = address(0);
     constructor(
-        address _ecoMultisig
+        address _systemMultisig
     ) 
-    ERC20("EcoFi Token", "ECO")
+    ERC20("Life Token", "LIV")
     {
         deployer = msg.sender;
-        _mint(_ecoMultisig, 10*10**6*10**18);
+        _mint(_systemMultisig, 10*10**6*10**18);
     }
 
     /**
@@ -48,7 +48,7 @@ contract EcoFiToken is ERC20Burnable {
      * - `_recipient` cannot be the token contract address.
      */
     function _transfer(address _sender, address _recipient, uint256 _amount) internal override {
-        require(_recipient != address(this), "EcoFiToken: transfer to token contract address");
+        require(_recipient != address(this), "LifeToken: transfer to token contract address");
         super._transfer(_sender, _recipient, _amount);
     }
 
@@ -64,13 +64,13 @@ contract EcoFiToken is ERC20Burnable {
      * - `_recipient` cannot be the sprout contract address.
      */
     function transfer(address _recipient, uint256 _amount) public virtual override returns (bool) {
-        require(_recipient != address(sproutContract), "EcoFiToken: transfer to sprout contract address (use transferFrom instead)");
+        require(_recipient != address(sproutContract), "LifeToken: transfer to sprout contract address (use transferFrom instead)");
         return super.transfer(_recipient, _amount);
     }
 
     /**
-     * @notice Set Sprout address once it is deployed, so we can prevent users from mistakenly transferring
-     * ECO to the SPRT contract incorrectly (thus locking up their tokens)
+     * @notice Set Life address once it is deployed, so we can prevent users from mistakenly transferring
+     * LIV to the LIFE contract incorrectly (thus locking up their tokens)
      * @param _sproutContract Sprout contract address
      * @dev Sets `sproutContract` to supplied argument `_sproutContract` only one time.
      *
