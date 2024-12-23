@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// (EcoFi) Sprout Token Contract
+// (Life) Life Token Contract
 // Copyright (C) 2021
 //
 // This program is free software: you can redistribute it and/or modify
@@ -26,10 +26,10 @@ import { SafeMath } from "@openzeppelin/contracts/math/SafeMath.sol";
 import "./WadRayMath.sol";
 
 /**
- * @title Sprout Token (SPRT)
+ * @title Life Token (LIFE)
  * @notice Customized implementation of OpenZepplin's ERC20Burnable Token with custom burn and staking mechanism.
  */
-contract SproutToken is ERC20Burnable {
+	contract LifeToken is ERC20Burnable {
     using SafeERC20 for IERC20;
     using SafeMath for uint256;
     using WadRayMath for uint256;
@@ -42,9 +42,9 @@ contract SproutToken is ERC20Burnable {
     uint256 internal constant MAX_BONUS_PERIOD_SECONDS_RAY = 631152000*1e27; // 20 years in seconds in ray
     
     // Address of the token contract used for staking
-    address internal mEcoFiTokenContract;
+    address internal mLifeTokenContract;
     // EcoFi address
-    address internal mEcoFi;
+    address internal mLife;
     // Reserve pool balance
     mapping(address => uint256) internal mReservePool;
     // Staker address mapped to last deosit (lockup) date
@@ -56,16 +56,16 @@ contract SproutToken is ERC20Burnable {
 
     /**
      * @notice Constructor
-     * @param _baseTokenContract The contract address of the token which will be staked to generate sprout
-     * @param _ecoFiAddress EcoFi address where company generation share will be sent
+     * @param _baseTokenContract The contract address of the token which will be staked to generate Life
+     * @param _systemAddress Life address where system generation share will be sent
      */
     constructor(
         address _baseTokenContract,
-        address _ecoFiAddress
-    ) ERC20("Sprout Token", "SPRT")
+        address _lifeAddress
+    ) ERC20("Life Token", "LIFE")
     {
-        mEcoFiTokenContract = _baseTokenContract; // ECO token contract address
-        mEcoFi = _ecoFiAddress; // ECO address for generation share
+        mLifeTokenContract = _baseTokenContract; // ECO token contract address
+        mLife = _systemAddress; // LIVE address for generation share
     }
 
     /**
@@ -82,7 +82,7 @@ contract SproutToken is ERC20Burnable {
      */
     function _transfer(address _sender, address _recipient, uint256 _amount) internal override {
         require(_recipient != address(this), "SproutToken: transfer to token contract");
-        require(_recipient != mEcoFiTokenContract, "SproutToken: transfer to ECO token contract");
+        require(_recipient != mEcoFiTokenContract, "SproutToken: transfer to LIFE token contract");
         generateTokensFromStake();
         super._transfer(_sender, _recipient, _amount);
     }
@@ -173,7 +173,7 @@ contract SproutToken is ERC20Burnable {
         }
     }
     /**
-     * @notice Deposit ECO token for staking SPRT.
+     * @notice Deposit LIFE token for staking for LIVE.
      * @param _amount Amount of tokens to stake (in wei units)
      * @dev User must first approve this contract for the required amount.
      */
@@ -183,7 +183,7 @@ contract SproutToken is ERC20Burnable {
         if(mStakeBalance[msg.sender] > 0){
             generateTokensFromStake();
         }
-        IERC20(mEcoFiTokenContract).safeTransferFrom(msg.sender, address(this), _amount);
+        IERC20(mLifeTokenContract).safeTransferFrom(msg.sender, address(this), _amount);
         mStakeBalance[msg.sender] = mStakeBalance[msg.sender].add(_amount);
         mLastDeposit[msg.sender] = block.timestamp;
         mLastMint[msg.sender] = block.timestamp;
@@ -191,9 +191,9 @@ contract SproutToken is ERC20Burnable {
     }
 
     /**
-     * @notice Withdraw ECO token (stop staking for SPRT).
+     * @notice Withdraw LIFE token (stop staking for LIVE).
      * @param _amount Amount of tokens to withdraw (in wei units)
-     * @dev Withdraws ECO tokens `amount` .
+     * @dev Withdraws LIfE tokens `amount` .
      */
     function stakeWithdraw(uint256 _amount) public {
 
@@ -211,7 +211,7 @@ contract SproutToken is ERC20Burnable {
             _transfer(address(this), msg.sender, mReservePool[msg.sender]);
             mReservePool[msg.sender] = 0;
         }
-        IERC20(mEcoFiTokenContract).safeTransfer(msg.sender, _amount);
+        IERC20(mLifeTokenContract).safeTransfer(msg.sender, _amount);
 
     }
 
@@ -230,20 +230,20 @@ contract SproutToken is ERC20Burnable {
         return mReservePool[_account];
     }
 
-    function ecoBalanceOf(address _account) public view returns (uint256){
+    function lifeBalanceOf(address _account) public view returns (uint256){
         return mStakeBalance[_account];
     }
 
     /**
      * @notice Returns the information required to extrapolate the generation amount.
      * @param _account Address of the account of which the information is needed.
-     * @return rawBalance SPRT balance, not taking current stakes into account.
-     * @return stakeBalance Staked ECO amount.
+     * @return rawBalance LIVE balance, not taking current stakes into account.
+     * @return stakeBalance Staked LIFE amount.
      * @return lastDeposit Last deposit timestamp in seconds since epoch.
      * @return lastMint Last mint timestamp in seconds since epoch.
      * @return blockTime Current block time.
-     * @dev The returned SPRT balance is not taking the current stake into 
-     * @dev account. This is required to know the actual amount of SPRT after 
+     * @dev The returned LiVE balance is not taking the current stake into 
+     * @dev account. This is required to know the actual amount of LiVE after 
      * @dev extrapolation since `balanceOf` accounts for the current stake.
      */
     function generationExtrapolationInformation(address _account)
