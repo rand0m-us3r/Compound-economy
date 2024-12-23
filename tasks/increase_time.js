@@ -1,4 +1,4 @@
-// This task is useful to debug the `stakeWithdraw` method of the sprout
+// This task is useful to debug the `stakeWithdraw` method of the live
 // contract.
 task("increase_time", "advance the time by 91 days")
   .setAction(async({}) => {
