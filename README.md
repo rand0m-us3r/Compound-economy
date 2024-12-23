@@ -2,14 +2,14 @@
 
 *DRAFT* Should be thoroughly audited before production use !
 
-The Sprout token contract allows anyone to mint SPRT by depositing/staking ECO
+The token contract allows anyone to mint tokens by depositing/staking base token
 (for at least a minimum amount of time).
 
 The generation reward is as follows:
 
 - Flat 200% annual
 - Linearly increasing annual generation bonus reaching 100% after 20 years
-- Minimum 90 day lockup
+- Minimum 360 day lockup
 - Note: lockup times (& bonuses) reset on any deposit (partial withdrawal is
   allowed without penalizing generation bonus of remaining amount)
 - Sprout Generation distribution: 90% user, 5% EcoFi, 5% user reserve balance
