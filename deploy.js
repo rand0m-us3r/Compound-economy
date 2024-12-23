@@ -9,39 +9,39 @@ async function main() {
   }
 
   // ethers is available in the global scope
-  const [deployer, eco_multisig] = await ethers.getSigners();
+  const [deployer, life_multisig] = await ethers.getSigners();
   console.log(
     "Deploying the contracts with the account:",
     await deployer.getAddress(),
-    "eco_multisig is:",
-    await eco_multisig.getAddress()
+    "life_multisig is:",
+    await life_multisig.getAddress()
   );
 
   console.log("Account balance:", (await deployer.getBalance()).toString());
 
-  const EcoFiToken = await ethers.getContractFactory("EcoFiToken");
-  const ecoToken = await EcoFiToken.deploy(await eco_multisig.getAddress());
+  const LifeToken = await ethers.getContractFactory("LifeToken");
+  const lifeToken = await LifeToken.deploy(await life_multisig.getAddress());
 
   await ecoToken.deployed();
 
-  console.log("Deployed ECO contract to ", ecoToken.address);
+  console.log("Deployed LIFE contract to ", lifeToken.address);
 
-  const SproutToken = await ethers.getContractFactory("SproutToken");
-  const sproutToken = await SproutToken.deploy(ecoToken.address, await eco_multisig.getAddress());
+  const LIVEToken = await ethers.getContractFactory("LiveToken");
+  const LIVEToken = await LiveToken.deploy(lifeToken.address, await life_multisig.getAddress());
 
-  await sproutToken.deployed();
+  await liveToken.deployed();
 
-  console.log("Deployed sprout contract to ", sproutToken.address);
+  console.log("Deployed live contract to ", liveToken.address);
 
-  // Set sprout contract address in ECO contract (to prevent accidental transfer())
-  await ecoToken.connect(deployer).setSproutAddress(sproutToken.address);
-  console.log("Set SproutToken address in EcoFiToken contract");
+  // Set sprout contract address in LIFE contract (to prevent accidental transfer())
+  await lifeToken.connect(deployer).setLiveAddress(liveToken.address);
+  console.log("Set LiveToken address in LifeToken contract");
 
   // We also save the contracts' artifacts and address in the frontend directory
-  saveFrontendFiles(sproutToken, ecoToken);
+  saveFrontendFiles(liveToken, lifeToken);
 }
 
-function saveFrontendFiles(sproutToken, ecoToken) {
+function saveFrontendFiles(liveToken, lifeToken) {
   const fs = require("fs");
   const contractsDir = __dirname + "/frontend/src/contracts";
 
@@ -51,22 +51,22 @@ function saveFrontendFiles(sproutToken, ecoToken) {
 
   fs.writeFileSync(
     contractsDir + "/eco-contract-address.json",
-    JSON.stringify({ EcoToken: ecoToken.address }, undefined, 2)
+    JSON.stringify({ LifeToken: lifeToken.address }, undefined, 2)
   );
 
   fs.writeFileSync(
     contractsDir + "/sprout-contract-address.json",
-    JSON.stringify({ SproutToken: sproutToken.address }, undefined, 2)
+    JSON.stringify({ LiveToken: liveToken.address }, undefined, 2)
   );
 
   fs.writeFileSync(
     contractsDir + "/EcoToken.json",
-    JSON.stringify(artifacts.readArtifactSync("EcoFiToken"), null, 2)
+    JSON.stringify(artifacts.readArtifactSync("LifeToken"), null, 2)
   );
 
   fs.writeFileSync(
-    contractsDir + "/SproutToken.json",
-    JSON.stringify(artifacts.readArtifactSync("SproutToken"), null, 2)
+    contractsDir + "/LiveToken.json",
+    JSON.stringify(artifacts.readArtifactSync("LiveToken"), null, 2)
   );
 }
 
