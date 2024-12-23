@@ -1,7 +1,7 @@
 {
   "name": "token-staking-contract",
   "version": "1.0.0",
-  "description": "EcoFi staking contract",
+  "description": "Life staking contract",
   "main": "index.js",
   "license": "AGPL-3.0-or-later",
   "dependencies": {
